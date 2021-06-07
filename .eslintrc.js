@@ -23,7 +23,6 @@ module.exports = {
     },
   },
   rules: {
-    'prettier/prettier': ['error', prettierOptions],
     'arrow-body-style': [2, 'as-needed'],
     'class-methods-use-this': 0,
     'import/imports-first': 0,
@@ -33,15 +32,28 @@ module.exports = {
     'import/no-named-as-default': 0,
     'import/no-unresolved': 2,
     'import/no-webpack-loader-syntax': 0,
-    'import/prefer-default-export': 0,
-    indent: [
-      2,
-      2,
+    'import/order': [
+      'error',
       {
-        SwitchCase: 1,
+        groups: ['builtin', 'external', 'internal'],
+        pathGroups: [
+          {
+            pattern: 'react',
+            group: 'external',
+            position: 'before',
+          },
+        ],
+        pathGroupsExcludedImportTypes: ['react'],
+        'newlines-between': 'always',
+        alphabetize: {
+          order: 'asc',
+          caseInsensitive: true,
+        },
       },
     ],
+    'import/prefer-default-export': 0,
     'jsx-a11y/aria-props': 2,
+    'jsx-a11y/click-events-have-key-events': 0,
     'jsx-a11y/heading-has-content': 0,
     'jsx-a11y/label-has-associated-control': [
       2,
@@ -60,11 +72,21 @@ module.exports = {
     'newline-per-chained-call': 0,
     'no-confusing-arrow': 0,
     'no-console': 1,
+    'no-param-reassign': [
+      'error',
+      {
+        props: true,
+        ignorePropertyModificationsFor: ['draft', 'draftState', 'sketch'],
+      },
+    ],
     'no-unused-vars': 2,
     'no-use-before-define': 0,
+    'no-underscore-dangle': ['error', { allow: ['_id'] }],
     'prefer-template': 2,
+    'prettier/prettier': ['error', prettierOptions],
     'react/destructuring-assignment': 0,
     'react-hooks/rules-of-hooks': 'error',
+    'react-hooks/exhaustive-deps': 'warn',
     'react/jsx-closing-tag-location': 0,
     'react/forbid-prop-types': 0,
     'react/jsx-first-prop-new-line': [2, 'multiline'],
@@ -81,6 +103,10 @@ module.exports = {
   },
   settings: {
     'import/resolver': {
+      node: {
+        paths: ['app'],
+        extensions: ['.js'],
+      },
       webpack: {
         config: './internals/webpack/webpack.prod.babel.js',
       },
