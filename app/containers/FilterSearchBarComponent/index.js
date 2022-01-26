@@ -4,7 +4,7 @@
  *
  */
 
-import React, { memo, useState, useEffect } from 'react';
+import React, { memo, useState, useEffect, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
@@ -13,8 +13,20 @@ import axios from 'axios';
 
 export function FilterSearchBarComponent() {
   const [agentsList, setAgentsList] = useState(null);
+  const [selectedAgents, setSelectedAgents] = useState(null);
   const [minDuration, setMinDuration] = useState(null);
   const [maxDuration, setMaxDuration] = useState(null);
+
+  let getOptionsForMultipleSelect = useCallback((arr)=>{
+    let children = arr.map(item=>(
+      <Select.Option key={item}>{item}</Select.Option>
+    ))
+    return children;
+  }, [])
+
+  const multipleDropdownChangeHandler = useCallback((valArr)=>{
+    setSelectedAgents([...valArr])
+  }, [])
 
   useEffect(() => {
     apiCall();
@@ -42,7 +54,7 @@ export function FilterSearchBarComponent() {
         );
         const duration = resp.data.data;
         setMinDuration(duration.minimum);
-        setMinDuration(duration.maximum);
+        setMaxDuration(duration.maximum);
       } catch (err) {
         console.log(err);
       }
@@ -63,12 +75,15 @@ export function FilterSearchBarComponent() {
       <Row>
         <Col span={8}>
           <Select
-            mode="multiple"
+            mode="tags"
             allowClear
             style={{ width: '90%' }}
             placeholder="Select Agents"
+            maxTagCount="3"
+            defaultValue={[]}
+            onChange={multipleDropdownChangeHandler}
           >
-            {}
+            { agentsList ? getOptionsForMultipleSelect(agentsList): [] }
           </Select>
         </Col>
         <Col span={10}>
