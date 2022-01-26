@@ -35,7 +35,7 @@ export default function App() {
         <Topbar />
       </div>
       <Layout>
-        <Layout.Content style={{ padding: '0 50px', height: contentHeight }}>
+        <Layout.Content style={{ padding: '20px 50px', height: contentHeight }}>
           <div className="site-layout-content">
             <Switch>
               <Route exact path="/filters" component={FilterComponent} />

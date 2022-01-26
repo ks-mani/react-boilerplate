@@ -1,6 +1,5 @@
 .site-layout-content {
-    min-height: 280px;
+    height: 95%;
     padding: 24px;
     background: #fff;
-    margin-top: 10px;
   }
