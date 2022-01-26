@@ -18,27 +18,30 @@ export function FilterSearchBarComponent(props) {
   const [maxDuration, setMaxDuration] = useState(0);
   const [selectedInputValue, setSelectedInputValue] = useState(0);
 
-  let getOptionsForMultipleSelect = useCallback((arr)=>{
-    let children = arr.map(item=>(
+  const getOptionsForMultipleSelect = useCallback(arr => {
+    const children = arr.map(item => (
       <Select.Option key={item}>{item}</Select.Option>
-    ))
+    ));
     return children;
-  }, [])
+  }, []);
 
-  const multipleDropdownChangeHandler = useCallback((valArr)=>{
-    setSelectedAgents([...valArr])
-  }, [])
+  const multipleDropdownChangeHandler = useCallback(valArr => {
+    setSelectedAgents([...valArr]);
+  }, []);
 
-  const sliderChangeHandler = useCallback((value)=>{
+  const sliderChangeHandler = useCallback(value => {
     if (isNaN(value)) {
       return;
     }
-    setSelectedInputValue(value)
-  }, [])
+    setSelectedInputValue(value);
+  }, []);
 
-  const clickHandler = useCallback((event)=>{
-    props.buttonHandler(selectedAgents, selectedInputValue);
-  }, [selectedAgents, selectedInputValue])
+  const clickHandler = useCallback(
+    event => {
+      props.buttonHandler(selectedAgents, selectedInputValue);
+    },
+    [props, selectedAgents, selectedInputValue],
+  );
 
   useEffect(() => {
     apiCall();
@@ -95,13 +98,23 @@ export function FilterSearchBarComponent(props) {
             defaultValue={[]}
             onChange={multipleDropdownChangeHandler}
           >
-            { agentsList ? getOptionsForMultipleSelect(agentsList): [] }
+            {agentsList ? getOptionsForMultipleSelect(agentsList) : []}
           </Select>
         </Col>
         <Col span={10}>
           <Row>
             <Col span={16}>
-              <Slider min={minDuration} max={Math.ceil(maxDuration)} step={0.1} onChange={sliderChangeHandler} value={typeof selectedInputValue === 'number' ? selectedInputValue : 0} />
+              <Slider
+                min={minDuration}
+                max={Math.ceil(maxDuration)}
+                step={0.1}
+                onChange={sliderChangeHandler}
+                value={
+                  typeof selectedInputValue === 'number'
+                    ? selectedInputValue
+                    : 0
+                }
+              />
             </Col>
             <Col span={4}>
               <InputNumber
@@ -116,7 +129,11 @@ export function FilterSearchBarComponent(props) {
           </Row>
         </Col>
         <Col span={6}>
-          <Button type="primary" style={{ float: 'right', width: '70%' }} onClick={clickHandler}>
+          <Button
+            type="primary"
+            style={{ float: 'right', width: '70%' }}
+            onClick={clickHandler}
+          >
             Submit
           </Button>
         </Col>

@@ -12,10 +12,10 @@ import { Divider } from 'antd';
 import FilterSearchBarComponent from '../FilterSearchBarComponent/index';
 
 export function FilterComponent() {
-  let searchTheRecords = useCallback((agents, duration)=>{
-    console.log(agents)
-    console.log(duration)
-  }, [])
+  const searchTheRecords = useCallback((agents, duration) => {
+    console.log(agents);
+    console.log(duration);
+  }, []);
   return (
     <>
       <FilterSearchBarComponent buttonHandler={searchTheRecords} />
