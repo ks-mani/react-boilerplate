@@ -79,7 +79,7 @@ export function FilterSearchBarComponent() {
             allowClear
             style={{ width: '90%' }}
             placeholder="Select Agents"
-            maxTagCount="3"
+            maxTagCount="2"
             defaultValue={[]}
             onChange={multipleDropdownChangeHandler}
           >
@@ -89,7 +89,7 @@ export function FilterSearchBarComponent() {
         <Col span={10}>
           <Row>
             <Col span={16}>
-              <Slider min={0} max={12} step={0.01} />
+              <Slider min={minDuration} max={maxDuration} step={0.1} />
             </Col>
             <Col span={4}>
               <InputNumber
