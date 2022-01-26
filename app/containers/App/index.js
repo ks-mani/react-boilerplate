@@ -8,18 +8,20 @@
  */
 
 import React from 'react';
-import { Switch, Route } from 'react-router-dom';
-
-import Home from 'containers/Home/Loadable';
+import { Switch, Route, Redirect } from 'react-router-dom';
 
 import Topbar from '../../components/Topbar/Loadable';
+import FilterComponent from '../FilterComponent/Loadable';
+import LabelContainer from '../LabelContainer/Loadable';
 
 export default function App() {
   return (
     <div>
       <Topbar />
       <Switch>
-        <Route exact path="/" component={Home} />
+        <Route exact path="/filters" component={FilterComponent} />
+        <Route exact path="/labels" component={LabelContainer} />
+        <Redirect from="/" to="/filters" />
       </Switch>
     </div>
   );

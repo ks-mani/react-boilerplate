@@ -8,6 +8,7 @@ import React, { memo, useState, useCallback } from 'react';
 // import PropTypes from 'prop-types';
 // import styled from 'styled-components';
 import { Menu, PageHeader } from 'antd';
+import { Link } from 'react-router-dom';
 
 function Topbar() {
   const [current, setCurrent] = useState('filter');
@@ -28,8 +29,12 @@ function Topbar() {
             selectedKeys={[current]}
             mode="horizontal"
           >
-            <Menu.Item key="filter">Filter</Menu.Item>
-            <Menu.Item key="labels">Labels</Menu.Item>
+            <Menu.Item key="filter">
+              <Link to="/filters">Filter</Link>
+            </Menu.Item>
+            <Menu.Item key="labels">
+              <Link to="/labels">Labels</Link>
+            </Menu.Item>
           </Menu>
         }
       />
