@@ -8,7 +8,7 @@ import React, { memo, useState, useEffect, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
-import { Row, Col, Select, Slider, InputNumber, Button } from 'antd';
+import { Row, Col, Select, Slider, InputNumber, Button, Divider } from 'antd';
 import axios from 'axios';
 
 export function FilterSearchBarComponent(props) {
@@ -128,7 +128,10 @@ export function FilterSearchBarComponent(props) {
             </Col>
           </Row>
         </Col>
-        <Col span={6}>
+        <Col span={1}>
+          <Divider type="vertical" style={{ background: '#d9d9d9', height: '35px' }}></Divider>
+        </Col>
+        <Col span={5}>
           <Button
             type="primary"
             style={{ float: 'right', width: '70%' }}
