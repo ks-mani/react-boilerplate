@@ -7,7 +7,7 @@
  *
  */
 
-import React from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import { Switch, Route, Redirect } from 'react-router-dom';
 import { Layout } from 'antd';
 
@@ -17,11 +17,24 @@ import LabelContainer from '../LabelContainer/Loadable';
 import './index.css';
 
 export default function App() {
+  const heightRef = useRef(null);
+  const [contentHeight, setContentHeight] = useState(0);
+
+  useEffect(() => {
+    if (heightRef.current) {
+      setContentHeight(
+        `${window.innerHeight - heightRef.current.offsetHeight}px`,
+      );
+    }
+  });
+
   return (
     <div>
-      <Topbar />
+      <div ref={heightRef}>
+        <Topbar />
+      </div>
       <Layout>
-        <Layout.Content style={{ padding: '0 50px', height: '90vh' }}>
+        <Layout.Content style={{ padding: '0 50px', height: contentHeight }}>
           <div className="site-layout-content">
             <Switch>
               <Route exact path="/filters" component={FilterComponent} />
