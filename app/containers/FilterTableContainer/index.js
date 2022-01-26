@@ -46,6 +46,7 @@ export function FilterTableContainer(props) {
         pagination={pagination}
         scroll={{ y: 350 }}
         onChange={handleTableChange}
+        loading={props.load}
       />
     </>
   );

@@ -15,6 +15,7 @@ import FilterTableContainer from '../FilterTableContainer/Loadable'
 
 export function FilterComponent() {
   const [tableData, setTableData] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   const searchTheRecords = useCallback((agents, duration) => {
     const headers = {
@@ -27,6 +28,7 @@ export function FilterComponent() {
         filter_time_range: [0, duration],
       },
     };
+    setLoading(true);
     axios
       .post(
         'https://damp-garden-93707.herokuapp.com/getfilteredcalls',
@@ -36,16 +38,18 @@ export function FilterComponent() {
       .then(resp => {
         const data = resp.data.data;
         setTableData(data);
+        setLoading(false);
       })
       .catch(err => {
         console.log(err);
+        setLoading(false);
       });
   }, []);
   return (
     <>
       <FilterSearchBarComponent buttonHandler={searchTheRecords} />
       <Divider />
-      <FilterTableContainer data={tableData}></FilterTableContainer>
+      <FilterTableContainer data={tableData} load={loading}></FilterTableContainer>
     </>
   );
 }
