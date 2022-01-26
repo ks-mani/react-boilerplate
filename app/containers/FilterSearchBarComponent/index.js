@@ -16,34 +16,38 @@ export function FilterSearchBarComponent() {
   const [minDuration, setMinDuration] = useState(null);
   const [maxDuration, setMaxDuration] = useState(null);
 
-  useEffect(()=>{
+  useEffect(() => {
     apiCall();
 
-   async  function apiCall(){
-     try {
-      let resp = await axios.get('https://damp-garden-93707.herokuapp.com/getlistofagents');
-      let listofagents = resp.data.data.listofagents;
-      setAgentsList(listofagents);
-     } catch(err) {
-       console.log(err)
-     }
+    async function apiCall() {
+      try {
+        const resp = await axios.get(
+          'https://damp-garden-93707.herokuapp.com/getlistofagents',
+        );
+        const { listofagents } = resp.data.data;
+        setAgentsList(listofagents);
+      } catch (err) {
+        console.log(err);
+      }
     }
-  }, [])
+  }, []);
 
-  useEffect(()=>{
+  useEffect(() => {
     apiCall();
 
-   async  function apiCall(){
-     try {
-      let resp = await axios.get('https://damp-garden-93707.herokuapp.com/getdurationrange');
-      let duration = resp.data.data;
-      setMinDuration(duration.minimum);
-      setMinDuration(duration.maximum);
-     } catch(err) {
-       console.log(err);
-     }
+    async function apiCall() {
+      try {
+        const resp = await axios.get(
+          'https://damp-garden-93707.herokuapp.com/getdurationrange',
+        );
+        const duration = resp.data.data;
+        setMinDuration(duration.minimum);
+        setMinDuration(duration.maximum);
+      } catch (err) {
+        console.log(err);
+      }
     }
-  }, [])
+  }, []);
 
   return (
     <>
