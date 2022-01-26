@@ -23,10 +23,11 @@ export default function App() {
   useEffect(() => {
     if (heightRef.current) {
       setContentHeight(
-        `${window.innerHeight - heightRef.current.offsetHeight}px`,
+        `${window.document.body.offsetHeight -
+          heightRef.current.offsetHeight}px`,
       );
     }
-  });
+  }, []);
 
   return (
     <div>
