@@ -4,13 +4,47 @@
  *
  */
 
-import React, { memo } from 'react';
+import React, { memo, useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { Row, Col, Select, Slider, InputNumber, Button } from 'antd';
+import axios from 'axios';
 
 export function FilterSearchBarComponent() {
+  const [agentsList, setAgentsList] = useState(null);
+  const [minDuration, setMinDuration] = useState(null);
+  const [maxDuration, setMaxDuration] = useState(null);
+
+  useEffect(()=>{
+    apiCall();
+
+   async  function apiCall(){
+     try {
+      let resp = await axios.get('https://damp-garden-93707.herokuapp.com/getlistofagents');
+      let listofagents = resp.data.data.listofagents;
+      setAgentsList(listofagents);
+     } catch(err) {
+       console.log(err)
+     }
+    }
+  }, [])
+
+  useEffect(()=>{
+    apiCall();
+
+   async  function apiCall(){
+     try {
+      let resp = await axios.get('https://damp-garden-93707.herokuapp.com/getdurationrange');
+      let duration = resp.data.data;
+      setMinDuration(duration.minimum);
+      setMinDuration(duration.maximum);
+     } catch(err) {
+       console.log(err);
+     }
+    }
+  }, [])
+
   return (
     <>
       <Row>
