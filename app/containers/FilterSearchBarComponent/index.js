@@ -12,10 +12,10 @@ import { Row, Col, Select, Slider, InputNumber, Button } from 'antd';
 import axios from 'axios';
 
 export function FilterSearchBarComponent() {
-  const [agentsList, setAgentsList] = useState(null);
-  const [selectedAgents, setSelectedAgents] = useState(null);
-  const [minDuration, setMinDuration] = useState(null);
-  const [maxDuration, setMaxDuration] = useState(null);
+  const [agentsList, setAgentsList] = useState([]);
+  const [selectedAgents, setSelectedAgents] = useState([]);
+  const [minDuration, setMinDuration] = useState(0);
+  const [maxDuration, setMaxDuration] = useState(0);
 
   let getOptionsForMultipleSelect = useCallback((arr)=>{
     let children = arr.map(item=>(
