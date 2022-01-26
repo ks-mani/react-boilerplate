@@ -4,7 +4,7 @@
  *
  */
 
-import React, { memo } from 'react';
+import React, { memo, useCallback } from 'react';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { Divider } from 'antd';
@@ -12,9 +12,13 @@ import { Divider } from 'antd';
 import FilterSearchBarComponent from '../FilterSearchBarComponent/index';
 
 export function FilterComponent() {
+  let searchTheRecords = useCallback((agents, duration)=>{
+    console.log(agents)
+    console.log(duration)
+  }, [])
   return (
     <>
-      <FilterSearchBarComponent />
+      <FilterSearchBarComponent buttonHandler={searchTheRecords} />
       <Divider />
     </>
   );

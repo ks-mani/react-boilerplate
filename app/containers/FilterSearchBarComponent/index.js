@@ -11,7 +11,7 @@ import { compose } from 'redux';
 import { Row, Col, Select, Slider, InputNumber, Button } from 'antd';
 import axios from 'axios';
 
-export function FilterSearchBarComponent() {
+export function FilterSearchBarComponent(props) {
   const [agentsList, setAgentsList] = useState([]);
   const [selectedAgents, setSelectedAgents] = useState([]);
   const [minDuration, setMinDuration] = useState(0);
@@ -35,6 +35,10 @@ export function FilterSearchBarComponent() {
     }
     setSelectedInputValue(value)
   }, [])
+
+  const clickHandler = useCallback((event)=>{
+    props.buttonHandler(selectedAgents, selectedInputValue);
+  }, [selectedAgents, selectedInputValue])
 
   useEffect(() => {
     apiCall();
@@ -112,7 +116,7 @@ export function FilterSearchBarComponent() {
           </Row>
         </Col>
         <Col span={6}>
-          <Button type="primary" style={{ float: 'right', width: '70%' }}>
+          <Button type="primary" style={{ float: 'right', width: '70%' }} onClick={clickHandler}>
             Submit
           </Button>
         </Col>
