@@ -26,7 +26,7 @@ export default function App() {
             <Switch>
               <Route exact path="/filters" component={FilterComponent} />
               <Route exact path="/labels" component={LabelContainer} />
-              <Redirect from="/" to="/filters" />
+              <Redirect from="*" to="/filters" />
             </Switch>
           </div>
         </Layout.Content>
