@@ -27,7 +27,7 @@ export default function App() {
           heightRef.current.offsetHeight}px`,
       );
     }
-  }, []);
+  }, [contentHeight]);
 
   return (
     <div>
