@@ -16,6 +16,7 @@ export function FilterSearchBarComponent() {
   const [selectedAgents, setSelectedAgents] = useState([]);
   const [minDuration, setMinDuration] = useState(0);
   const [maxDuration, setMaxDuration] = useState(0);
+  const [selectedInputValue, setSelectedInputValue] = useState(0);
 
   let getOptionsForMultipleSelect = useCallback((arr)=>{
     let children = arr.map(item=>(
@@ -26,6 +27,13 @@ export function FilterSearchBarComponent() {
 
   const multipleDropdownChangeHandler = useCallback((valArr)=>{
     setSelectedAgents([...valArr])
+  }, [])
+
+  const sliderChangeHandler = useCallback((value)=>{
+    if (isNaN(value)) {
+      return;
+    }
+    setSelectedInputValue(value)
   }, [])
 
   useEffect(() => {
@@ -79,7 +87,7 @@ export function FilterSearchBarComponent() {
             allowClear
             style={{ width: '90%' }}
             placeholder="Select Agents"
-            maxTagCount="2"
+            maxTagCount={2}
             defaultValue={[]}
             onChange={multipleDropdownChangeHandler}
           >
@@ -89,13 +97,15 @@ export function FilterSearchBarComponent() {
         <Col span={10}>
           <Row>
             <Col span={16}>
-              <Slider min={minDuration} max={maxDuration} step={0.1} />
+              <Slider min={minDuration} max={Math.ceil(maxDuration)} step={0.1} onChange={sliderChangeHandler} value={typeof selectedInputValue === 'number' ? selectedInputValue : 0} />
             </Col>
             <Col span={4}>
               <InputNumber
-                min={0}
-                max={12}
+                min={minDuration}
+                max={Math.ceil(maxDuration)}
                 style={{ margin: '0 16px' }}
+                value={selectedInputValue}
+                onChange={sliderChangeHandler}
                 step={0.1}
               />
             </Col>
