@@ -12,21 +12,19 @@ import { Table } from 'antd';
 const columns = [
   {
     title: 'Agent Id',
-    dataIndex: 'agent_id',
-    defaultSortOrder: 'descend',
-    sorter: (a, b) => a.agent_id - b.agent_id,
+    dataIndex: 'agent_id'
   },
   {
     title: 'Call Id',
     dataIndex: 'call_id',
     defaultSortOrder: 'descend',
-    sorter: (a, b) => a.call_id - b.call_id,
+    sorter: (a, b) => parseInt(a.call_id) - parseInt(b.call_id),
   },
   {
     title: 'Call Time',
     dataIndex: 'call_time',
     defaultSortOrder: 'descend',
-    sorter: (a, b) => a.call_time - b.call_time,
+    sorter: (a, b) => parseFloat(a.call_time) - parseFloat(b.call_time),
   },
 ];
 
