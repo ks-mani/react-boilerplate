@@ -21,7 +21,7 @@ function Topbar() {
       {/* <FormattedMessage {...messages.header} /> */}
       <PageHeader
         ghost={false}
-        title="Title"
+        title="Prodigal Assignment"
         extra={
           <Menu
             onClick={handleClick}
