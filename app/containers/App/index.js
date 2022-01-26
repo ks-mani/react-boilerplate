@@ -12,10 +12,12 @@ import { Switch, Route } from 'react-router-dom';
 
 import Home from 'containers/Home/Loadable';
 
+import Topbar from '../../components/Topbar/Loadable';
 
 export default function App() {
   return (
     <div>
+      <Topbar />
       <Switch>
         <Route exact path="/" component={Home} />
       </Switch>
