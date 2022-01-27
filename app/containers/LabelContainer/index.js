@@ -90,6 +90,10 @@ export function LabelContainer() {
     return children;
   }, []);
 
+  const multipleDropdownChangeHandler = useCallback(valArr => {
+    setSelectedLabels([...valArr]);
+  }, []);
+
   const showModal = useCallback(() => {
     setVisible(true);
     let labelData= new Set();
@@ -157,11 +161,13 @@ export function LabelContainer() {
           style={{ width: '90%' }}
           placeholder="Select Labels"
           defaultValue={selectedLabels}
+          onChange={multipleDropdownChangeHandler}
         >
           {labelsList.length > 0
             ? getOptionsForMultipleSelect(labelsList)
             : labelsList}
         </Select>): null}
+        <p>{JSON.stringify(selectedLabels)}</p>
       </Modal>
     </>
   );
