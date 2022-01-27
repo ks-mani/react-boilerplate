@@ -8,7 +8,7 @@ import React, { memo, useEffect, useState, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
-import { Table, Button, Tag, Modal } from 'antd';
+import { Table, Button, Tag, Modal, Select } from 'antd';
 import axios from 'axios';
 
 const columns = [
@@ -40,14 +40,14 @@ export function LabelContainer() {
   const [visible, setVisible] = useState(false);
   const [confirmLoading, setConfirmLoading] = useState(false);
 
-  const onSelectChange = useCallback((selectedKeys)=>{
-    setSelectedRowKeys(selectedKeys)
-  }, [])
+  const onSelectChange = useCallback(selectedKeys => {
+    setSelectedRowKeys(selectedKeys);
+  }, []);
 
   const fetchTheRecords = useCallback(() => {
     const headers = {
       'Content-Type': 'application/json',
-      'user_id': '24b456',
+      user_id: '24b456',
     };
 
     setLoading(true);
@@ -73,13 +73,20 @@ export function LabelContainer() {
     try {
       const resp = await axios.get(
         'https://damp-garden-93707.herokuapp.com/getlistoflabels',
-        { headers }
+        { headers },
       );
       const { unique_label_list } = resp.data.data;
       setLabelsList(unique_label_list);
     } catch (err) {
       console.log(err);
     }
+  }, []);
+
+  const getOptionsForMultipleSelect = useCallback(arr => {
+    const children = arr.map(item => (
+      <Select.Option key={item}>{item}</Select.Option>
+    ));
+    return children;
   }, []);
 
   const showModal = () => {
@@ -98,21 +105,28 @@ export function LabelContainer() {
     }, 2000);
   };
 
-
   useEffect(() => {
     fetchTheLabelsList();
-  }, []);
+  }, [fetchTheLabelsList]);
 
   useEffect(() => {
     fetchTheRecords();
-  }, []);
+  }, [fetchTheRecords]);
 
   return (
     <>
       <div style={{ marginBottom: 16 }}>
-        <Button type="primary" disabled={selectedRowKeys.length===0} onClick={showModal}>Add/Remove Labels</Button>
+        <Button
+          type="primary"
+          disabled={selectedRowKeys.length === 0}
+          onClick={showModal}
+        >
+          Add/Remove Labels
+        </Button>
         <span style={{ marginLeft: 8 }}>
-          {selectedRowKeys.length>0 ? `Selected ${selectedRowKeys.length} items` : ''}
+          {selectedRowKeys.length > 0
+            ? `Selected ${selectedRowKeys.length} items`
+            : ''}
         </span>
       </div>
       <Table
@@ -123,14 +137,24 @@ export function LabelContainer() {
         loading={loading}
       />
       <Modal
-        title="Set the labels for the selectd rows"
+        title="Set the labels for the selected rows"
         visible={visible}
         confirmLoading={confirmLoading}
         width={800}
         onCancel={handleCancel}
         onOk={handleOk}
       >
-        <p>{JSON.stringify(selectedRowKeys)}</p>
+        <Select
+          mode="tags"
+          allowClear
+          style={{ width: '90%' }}
+          placeholder="Select Labels"
+          defaultValue={[]}
+        >
+          {labelsList.length > 0
+            ? getOptionsForMultipleSelect(labelsList)
+            : labelsList}
+        </Select>
       </Modal>
     </>
   );
