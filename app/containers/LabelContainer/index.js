@@ -65,10 +65,6 @@ export function LabelContainer() {
       });
   }, []);
 
-  const showModal = () => {
-    setVisible(true);
-  };
-
   const fetchTheLabelsList = useCallback(async () => {
     const headers = {
       'Content-Type': 'application/json',
@@ -85,6 +81,23 @@ export function LabelContainer() {
       console.log(err);
     }
   }, []);
+
+  const showModal = () => {
+    setVisible(true);
+  };
+
+  const handleCancel = () => {
+    setVisible(false);
+  };
+
+  const handleOk = () => {
+    setConfirmLoading(true);
+    setTimeout(() => {
+      setVisible(false);
+      setConfirmLoading(false);
+    }, 2000);
+  };
+
 
   useEffect(() => {
     fetchTheLabelsList();
@@ -113,8 +126,11 @@ export function LabelContainer() {
         title="Set the labels for the selectd rows"
         visible={visible}
         confirmLoading={confirmLoading}
+        width={800}
+        onCancel={handleCancel}
+        onOk={handleOk}
       >
-        <p>{"Hello mani"}</p>
+        <p>{JSON.stringify(selectedRowKeys)}</p>
       </Modal>
     </>
   );
