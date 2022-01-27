@@ -83,7 +83,7 @@ export function FilterSearchBarComponent(props) {
           <h4>Agents List</h4>
         </Col>
         <Col span={10}>
-          <h4>Duration</h4>
+          <h4>Duration (in min.)</h4>
         </Col>
         <Col span={6} />
       </Row>
