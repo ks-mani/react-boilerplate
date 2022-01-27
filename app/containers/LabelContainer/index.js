@@ -15,6 +15,7 @@ const columns = [
     title: 'Call Id',
     dataIndex: 'call_id',
     defaultSortOrder: 'descend',
+    width: 250,
     sorter: (a, b) => parseInt(a.call_id) - parseInt(b.call_id),
   },
   {
@@ -28,14 +29,17 @@ export function LabelContainer() {
   return (
     <>
       <div style={{ marginBottom: 16 }}>
-          <Button type="primary">
-            Add/Remove Tags
-          </Button>
-          <span style={{ marginLeft: 8 }}>
-            {/* {hasSelected ? `Selected ${selectedRowKeys.length} items` : ''} */}
-          </span>
-        </div>
-        <Table rowSelection={{selectedRowKeys:[], onChange: ()=>{}} } columns={columns} dataSource={[]} scroll={{ y: 400 }} />
+        <Button type="primary">Add/Remove Tags</Button>
+        <span style={{ marginLeft: 8 }}>
+          {/* {hasSelected ? `Selected ${selectedRowKeys.length} items` : ''} */}
+        </span>
+      </div>
+      <Table
+        rowSelection={{ selectedRowKeys: [], onChange: () => {} }}
+        columns={columns}
+        dataSource={[]}
+        scroll={{ y: 400 }}
+      />
     </>
   );
 }
