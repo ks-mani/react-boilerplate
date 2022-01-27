@@ -8,7 +8,7 @@ import React, { memo, useEffect, useState, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
-import { Table, Button, Tag } from 'antd';
+import { Table, Button, Tag, Modal } from 'antd';
 import axios from 'axios';
 
 const columns = [
@@ -37,6 +37,8 @@ export function LabelContainer() {
   const [loading, setLoading] = useState(false);
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
   const [labelsList, setLabelsList] = useState([]);
+  const [visible, setVisible] = useState(false);
+  const [confirmLoading, setConfirmLoading] = useState(false);
 
   const onSelectChange = useCallback((selectedKeys)=>{
     setSelectedRowKeys(selectedKeys)
@@ -62,6 +64,10 @@ export function LabelContainer() {
         setLoading(false);
       });
   }, []);
+
+  const showModal = () => {
+    setVisible(true);
+  };
 
   const fetchTheLabelsList = useCallback(async () => {
     const headers = {
@@ -91,7 +97,7 @@ export function LabelContainer() {
   return (
     <>
       <div style={{ marginBottom: 16 }}>
-        <Button type="primary" disabled={selectedRowKeys.length===0}>Add/Remove Labels</Button>
+        <Button type="primary" disabled={selectedRowKeys.length===0} onClick={showModal}>Add/Remove Labels</Button>
         <span style={{ marginLeft: 8 }}>
           {selectedRowKeys.length>0 ? `Selected ${selectedRowKeys.length} items` : ''}
         </span>
@@ -103,6 +109,13 @@ export function LabelContainer() {
         scroll={{ y: 400 }}
         loading={loading}
       />
+      <Modal
+        title="Set the labels for the selectd rows"
+        visible={visible}
+        confirmLoading={confirmLoading}
+      >
+        <p>{"Hello mani"}</p>
+      </Modal>
     </>
   );
 }
