@@ -166,7 +166,7 @@ export function LabelContainer() {
         { headers },
       )
       .then(resp => {
-        if(resp.message === 'successfull') {
+        if(resp.data.message === 'successfull') {
           notification.open({
             message: 'Success'
           });
