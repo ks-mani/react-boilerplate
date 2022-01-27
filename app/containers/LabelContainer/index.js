@@ -4,41 +4,82 @@
  *
  */
 
-import React, { memo } from 'react';
+import React, { memo, useEffect, useState, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
-import { Table, Button } from 'antd';
+import { Table, Button, Tag } from 'antd';
+import axios from 'axios';
 
 const columns = [
   {
     title: 'Call Id',
     dataIndex: 'call_id',
     defaultSortOrder: 'descend',
-    width: 250,
+    width: 300,
     sorter: (a, b) => parseInt(a.call_id) - parseInt(b.call_id),
   },
   {
     title: 'Labels',
     dataIndex: 'label_id',
-    // render: (val)=>parseFloat(val).toFixed(2).toString()
+    render: val => (
+      <>
+        {val.map(item => (
+          <Tag key={item}>{item}</Tag>
+        ))}
+      </>
+    ),
   },
 ];
 
 export function LabelContainer() {
+  const [tableData, setTableData] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [selectedRowKeys, setSelectedRowKeys] = useState([]);
+
+  const onSelectChange = useCallback((selectedKeys)=>{
+    setSelectedRowKeys(selectedKeys)
+  }, [])
+
+  const fetchTheRecords = useCallback(() => {
+    const headers = {
+      'Content-Type': 'application/json',
+      user_id: '24b456',
+    };
+
+    setLoading(true);
+    axios
+      .get('https://damp-garden-93707.herokuapp.com/getcalllist', { headers })
+      .then(resp => {
+        const { call_data } = resp.data.data;
+        setTableData(call_data.map(item => ({ ...item, key: item.call_id })));
+      })
+      .catch(err => {
+        console.log(err);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  }, []);
+
+  useEffect(() => {
+    fetchTheRecords();
+  }, [fetchTheRecords]);
+
   return (
     <>
       <div style={{ marginBottom: 16 }}>
-        <Button type="primary">Add/Remove Tags</Button>
+        <Button type="primary" disabled={selectedRowKeys.length===0}>Add/Remove Labels</Button>
         <span style={{ marginLeft: 8 }}>
-          {/* {hasSelected ? `Selected ${selectedRowKeys.length} items` : ''} */}
+          {selectedRowKeys.length>0 ? `Selected ${selectedRowKeys.length} items` : ''}
         </span>
       </div>
       <Table
-        rowSelection={{ selectedRowKeys: [], onChange: () => {} }}
+        rowSelection={{ selectedRowKeys, onChange: onSelectChange }}
         columns={columns}
-        dataSource={[]}
+        dataSource={tableData}
         scroll={{ y: 400 }}
+        loading={loading}
       />
     </>
   );
