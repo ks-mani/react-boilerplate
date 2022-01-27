@@ -109,6 +109,7 @@ export function LabelContainer() {
   };
 
   const handleOk = useCallback(() => {
+    setConfirmLoading(true);
     const labelData = new Set();
     selectedRowKeys.forEach(item => {
       const obj = tableData.find(el => el.call_id === item);
