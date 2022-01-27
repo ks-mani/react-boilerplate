@@ -96,25 +96,84 @@ export function LabelContainer() {
 
   const showModal = useCallback(() => {
     setVisible(true);
-    let labelData= new Set();
-    selectedRowKeys.forEach((item)=>{
-      let obj = tableData.find(el=>el.call_id===item)
-      labelData.add(...obj.label_id)
-    })
-    setSelectedLabels([...labelData.values()])
-  }, [selectedRowKeys]);
+    const labelData = new Set();
+    selectedRowKeys.forEach(item => {
+      const obj = tableData.find(el => el.call_id === item);
+      labelData.add(...obj.label_id);
+    });
+    setSelectedLabels([...labelData.values()]);
+  }, [selectedRowKeys, tableData]);
 
   const handleCancel = () => {
     setVisible(false);
   };
 
-  const handleOk = () => {
-    setConfirmLoading(true);
-    setTimeout(() => {
-      setVisible(false);
+  const handleOk = useCallback(() => {
+    const labelData = new Set();
+    selectedRowKeys.forEach(item => {
+      const obj = tableData.find(el => el.call_id === item);
+      labelData.add(...obj.label_id);
+    });
+    const source = [...labelData.values()];
+
+    const toAdd = [];
+    const toRemove = [];
+
+    source.forEach(item => {
+      if (!selectedLabels.includes(item)) {
+        toRemove.push(item);
+      }
+    });
+
+    selectedLabels.forEach(item => {
+      if (!source.includes(item)) {
+        toAdd.push(item);
+      }
+    });
+
+    if (toAdd.length === 0 && toRemove.length === 0) {
       setConfirmLoading(false);
-    }, 2000);
-  };
+      return;
+    }
+
+    const headers = {
+      'Content-Type': 'application/json',
+      user_id: '24b456',
+    };
+
+    const payload = {
+      operation: {
+        call_list: selectedRowKeys,
+        label_ops: [
+          ...toAdd.map(item => ({ name: item, op: 'add' })),
+          ...toRemove.map(item => ({ name: item, op: 'remove' })),
+        ],
+      },
+    };
+
+    axios
+      .post(
+        'https://damp-garden-93707.herokuapp.com/getfilteredcalls',
+        JSON.stringify(payload),
+        { headers },
+      )
+      .then(resp => {})
+      .catch(err => {
+        console.log(err);
+      })
+      .finally(() => {
+        setVisible(false);
+        setConfirmLoading(false);
+        fetchTheRecords();
+        fetchTheLabelsList();
+      });
+  }, [
+    selectedRowKeys,
+    selectedLabels,
+    tableData,
+    fetchTheRecords,
+    fetchTheLabelsList,
+  ]);
 
   useEffect(() => {
     fetchTheLabelsList();
@@ -155,18 +214,20 @@ export function LabelContainer() {
         onCancel={handleCancel}
         onOk={handleOk}
       >
-        {visible ? (<Select
-          mode="tags"
-          allowClear
-          style={{ width: '90%' }}
-          placeholder="Select Labels"
-          defaultValue={selectedLabels}
-          onChange={multipleDropdownChangeHandler}
-        >
-          {labelsList.length > 0
-            ? getOptionsForMultipleSelect(labelsList)
-            : labelsList}
-        </Select>): null}
+        {visible ? (
+          <Select
+            mode="tags"
+            allowClear
+            style={{ width: '90%' }}
+            placeholder="Select Labels"
+            defaultValue={selectedLabels}
+            onChange={multipleDropdownChangeHandler}
+          >
+            {labelsList.length > 0
+              ? getOptionsForMultipleSelect(labelsList)
+              : labelsList}
+          </Select>
+        ) : null}
         <p>{JSON.stringify(selectedLabels)}</p>
       </Modal>
     </>
