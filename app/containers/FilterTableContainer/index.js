@@ -21,10 +21,11 @@ const columns = [
     sorter: (a, b) => parseInt(a.call_id) - parseInt(b.call_id),
   },
   {
-    title: 'Call Time',
+    title: 'Call Time (in min.)',
     dataIndex: 'call_time',
     defaultSortOrder: 'descend',
     sorter: (a, b) => parseFloat(a.call_time) - parseFloat(b.call_time),
+    render: (val)=>parseFloat(val).toFixed(2).toString()
   },
 ];
 

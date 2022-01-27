@@ -37,7 +37,7 @@ export function FilterComponent() {
       )
       .then(resp => {
         const data = resp.data.data;
-        setTableData(data);
+        setTableData(data.map(item=>({...item, key: item.call_id})));
         setLoading(false);
       })
       .catch(err => {
