@@ -143,7 +143,7 @@ export function LabelContainer() {
 
     const payload = {
       operation: {
-        call_list: selectedRowKeys,
+        callList: selectedRowKeys,
         label_ops: [
           ...toAdd.map(item => ({ name: item, op: 'add' })),
           ...toRemove.map(item => ({ name: item, op: 'remove' })),
@@ -153,7 +153,7 @@ export function LabelContainer() {
 
     axios
       .post(
-        'https://damp-garden-93707.herokuapp.com/getfilteredcalls',
+        'https://damp-garden-93707.herokuapp.com/applyLabels',
         JSON.stringify(payload),
         { headers },
       )
@@ -228,7 +228,6 @@ export function LabelContainer() {
               : labelsList}
           </Select>
         ) : null}
-        <p>{JSON.stringify(selectedLabels)}</p>
       </Modal>
     </>
   );
