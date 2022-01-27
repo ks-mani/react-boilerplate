@@ -11,7 +11,10 @@ import { Menu, PageHeader } from 'antd';
 import { Link, withRouter } from 'react-router-dom';
 
 function Topbar({ location }) {
-  const [current, setCurrent] = useState(() => location.pathname.split('/')[1]);
+  const [current, setCurrent] = useState(() => {
+    const path = location.pathname.split('/')[1];
+    return path;
+  });
 
   const handleClick = useCallback(e => {
     setCurrent(e.key);
@@ -29,8 +32,8 @@ function Topbar({ location }) {
             selectedKeys={[current]}
             mode="horizontal"
           >
-            <Menu.Item key="filter">
-              <Link to="/filters">Filter</Link>
+            <Menu.Item key="filters">
+              <Link to="/filters">Filters</Link>
             </Menu.Item>
             <Menu.Item key="labels">
               <Link to="/labels">Labels</Link>
