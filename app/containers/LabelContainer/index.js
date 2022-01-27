@@ -5,7 +5,6 @@
  */
 
 import React, { memo, useEffect, useState, useCallback } from 'react';
-import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { Table, Button, Tag, Modal, Select, notification } from 'antd';
@@ -17,7 +16,7 @@ const columns = [
     dataIndex: 'call_id',
     defaultSortOrder: 'descend',
     width: 300,
-    sorter: (a, b) => parseInt(a.call_id) - parseInt(b.call_id),
+    sorter: (a, b) => parseInt(a.call_id, 10) - parseInt(b.call_id, 10),
   },
   {
     title: 'Labels',
@@ -55,8 +54,8 @@ export function LabelContainer() {
     axios
       .get('https://damp-garden-93707.herokuapp.com/getcalllist', { headers })
       .then(resp => {
-        const { call_data } = resp.data.data;
-        setTableData(call_data.map(item => ({ ...item, key: item.call_id })));
+        const callData = resp.data.data.call_data;
+        setTableData(callData.map(item => ({ ...item, key: item.call_id })));
       })
       .catch(err => {
         console.log(err);
@@ -76,8 +75,8 @@ export function LabelContainer() {
         'https://damp-garden-93707.herokuapp.com/getlistoflabels',
         { headers },
       );
-      const { unique_label_list } = resp.data.data;
-      setLabelsList(unique_label_list);
+      const uniqueLabelList = resp.data.data.unique_label_list;
+      setLabelsList(uniqueLabelList);
     } catch (err) {
       console.log(err);
     }
@@ -99,9 +98,9 @@ export function LabelContainer() {
     const labelData = new Set();
     selectedRowKeys.forEach(item => {
       const obj = tableData.find(el => el.call_id === item);
-      obj.label_id.forEach(item=>{
-        labelData.add(item)
-      })
+      obj.label_id.forEach(el => {
+        labelData.add(el);
+      });
     });
     setSelectedLabels([...labelData.values()]);
   }, [selectedRowKeys, tableData]);
@@ -115,9 +114,9 @@ export function LabelContainer() {
     const labelData = new Set();
     selectedRowKeys.forEach(item => {
       const obj = tableData.find(el => el.call_id === item);
-      obj.label_id.forEach(item=>{
-        labelData.add(item)
-      })
+      obj.label_id.forEach(el => {
+        labelData.add(el);
+      });
     });
     const source = [...labelData.values()];
 
@@ -139,7 +138,7 @@ export function LabelContainer() {
     if (toAdd.length === 0 && toRemove.length === 0) {
       setConfirmLoading(false);
       notification.open({
-        message: 'No Change in the labels'
+        message: 'No Change in the labels',
       });
       return;
     }
@@ -166,12 +165,12 @@ export function LabelContainer() {
         { headers },
       )
       .then(resp => {
-        if(resp.data.message === 'successfull') {
+        if (resp.data.message === 'successfull') {
           notification.open({
-            message: 'Success'
+            message: 'Success',
           });
         }
-        setSelectedRowKeys([])
+        setSelectedRowKeys([]);
       })
       .catch(err => {
         console.log(err);
@@ -248,9 +247,7 @@ export function LabelContainer() {
   );
 }
 
-LabelContainer.propTypes = {
-  dispatch: PropTypes.func.isRequired,
-};
+LabelContainer.propTypes = {};
 
 function mapDispatchToProps(dispatch) {
   return {

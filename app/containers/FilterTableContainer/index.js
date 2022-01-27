@@ -8,24 +8,28 @@ import React, { memo, useState, useCallback } from 'react';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { Table } from 'antd';
+import PropTypes from 'prop-types';
 
 const columns = [
   {
     title: 'Agent Id',
-    dataIndex: 'agent_id'
+    dataIndex: 'agent_id',
   },
   {
     title: 'Call Id',
     dataIndex: 'call_id',
     defaultSortOrder: 'descend',
-    sorter: (a, b) => parseInt(a.call_id) - parseInt(b.call_id),
+    sorter: (a, b) => parseInt(a.call_id, 10) - parseInt(b.call_id, 10),
   },
   {
     title: 'Call Time (in min.)',
     dataIndex: 'call_time',
     defaultSortOrder: 'descend',
     sorter: (a, b) => parseFloat(a.call_time) - parseFloat(b.call_time),
-    render: (val)=>parseFloat(val).toFixed(2).toString()
+    render: val =>
+      parseFloat(val)
+        .toFixed(2)
+        .toString(),
   },
 ];
 
@@ -35,8 +39,8 @@ export function FilterTableContainer(props) {
     pageSize: 10,
   });
 
-  const handleTableChange = useCallback((paginate, filters, sorter) => {
-    setPagination(paginate)
+  const handleTableChange = useCallback(paginate => {
+    setPagination(paginate);
   }, []);
 
   return (
@@ -52,6 +56,11 @@ export function FilterTableContainer(props) {
     </>
   );
 }
+
+FilterTableContainer.propTypes = {
+  data: PropTypes.array.isRequired,
+  load: PropTypes.bool.isRequired,
+};
 
 function mapDispatchToProps(dispatch) {
   return {

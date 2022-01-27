@@ -30,18 +30,15 @@ export function FilterSearchBarComponent(props) {
   }, []);
 
   const sliderChangeHandler = useCallback(value => {
-    if (isNaN(value)) {
+    if (Number.isNaN(value)) {
       return;
     }
     setSelectedInputValue(value);
   }, []);
 
-  const clickHandler = useCallback(
-    event => {
-      props.buttonHandler(selectedAgents, selectedInputValue);
-    },
-    [props, selectedAgents, selectedInputValue],
-  );
+  const clickHandler = useCallback(() => {
+    props.buttonHandler(selectedAgents, selectedInputValue);
+  }, [props, selectedAgents, selectedInputValue]);
 
   useEffect(() => {
     apiCall();
@@ -129,7 +126,10 @@ export function FilterSearchBarComponent(props) {
           </Row>
         </Col>
         <Col span={1}>
-          <Divider type="vertical" style={{ background: '#d9d9d9', height: '35px' }}></Divider>
+          <Divider
+            type="vertical"
+            style={{ background: '#d9d9d9', height: '35px' }}
+          />
         </Col>
         <Col span={5}>
           <Button
@@ -146,7 +146,7 @@ export function FilterSearchBarComponent(props) {
 }
 
 FilterSearchBarComponent.propTypes = {
-  dispatch: PropTypes.func.isRequired,
+  buttonHandler: PropTypes.func.isRequired,
 };
 
 function mapDispatchToProps(dispatch) {
