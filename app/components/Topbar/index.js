@@ -5,13 +5,13 @@
  */
 
 import React, { memo, useState, useCallback } from 'react';
-// import PropTypes from 'prop-types';
+import PropTypes from 'prop-types';
 // import styled from 'styled-components';
 import { Menu, PageHeader } from 'antd';
-import { Link } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 
-function Topbar() {
-  const [current, setCurrent] = useState('filter');
+function Topbar({ location }) {
+  const [current, setCurrent] = useState(() => location.pathname.split('/')[1]);
 
   const handleClick = useCallback(e => {
     setCurrent(e.key);
@@ -42,6 +42,8 @@ function Topbar() {
   );
 }
 
-Topbar.propTypes = {};
+Topbar.propTypes = {
+  location: PropTypes.object.isRequired,
+};
 
-export default memo(Topbar);
+export default memo(withRouter(Topbar));
