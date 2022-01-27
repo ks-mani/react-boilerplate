@@ -35,7 +35,7 @@ export function LabelContainer() {
             {/* {hasSelected ? `Selected ${selectedRowKeys.length} items` : ''} */}
           </span>
         </div>
-        <Table  columns={columns} dataSource={[]} scroll={{ y: 400 }} />
+        <Table rowSelection={{selectedRowKeys:[], onChange: ()=>{}} } columns={columns} dataSource={[]} scroll={{ y: 400 }} />
     </>
   );
 }
