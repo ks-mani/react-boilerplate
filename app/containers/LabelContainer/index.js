@@ -36,6 +36,7 @@ export function LabelContainer() {
   const [tableData, setTableData] = useState([]);
   const [loading, setLoading] = useState(false);
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
+  const [labelsList, setLabelsList] = useState([]);
 
   const onSelectChange = useCallback((selectedKeys)=>{
     setSelectedRowKeys(selectedKeys)
@@ -44,7 +45,7 @@ export function LabelContainer() {
   const fetchTheRecords = useCallback(() => {
     const headers = {
       'Content-Type': 'application/json',
-      user_id: '24b456',
+      'user_id': '24b456',
     };
 
     setLoading(true);
@@ -62,9 +63,30 @@ export function LabelContainer() {
       });
   }, []);
 
+  const fetchTheLabelsList = useCallback(async () => {
+    const headers = {
+      'Content-Type': 'application/json',
+      user_id: '24b456',
+    };
+    try {
+      const resp = await axios.get(
+        'https://damp-garden-93707.herokuapp.com/getlistoflabels',
+        { headers }
+      );
+      const { unique_label_list } = resp.data.data;
+      setLabelsList(unique_label_list);
+    } catch (err) {
+      console.log(err);
+    }
+  }, []);
+
+  useEffect(() => {
+    fetchTheLabelsList();
+  }, []);
+
   useEffect(() => {
     fetchTheRecords();
-  }, [fetchTheRecords]);
+  }, []);
 
   return (
     <>
