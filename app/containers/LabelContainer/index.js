@@ -8,7 +8,7 @@ import React, { memo, useEffect, useState, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
-import { Table, Button, Tag, Modal, Select } from 'antd';
+import { Table, Button, Tag, Modal, Select, notification } from 'antd';
 import axios from 'axios';
 
 const columns = [
@@ -134,6 +134,9 @@ export function LabelContainer() {
 
     if (toAdd.length === 0 && toRemove.length === 0) {
       setConfirmLoading(false);
+      notification.open({
+        message: 'No Change in the labels'
+      });
       return;
     }
 
@@ -158,7 +161,14 @@ export function LabelContainer() {
         JSON.stringify(payload),
         { headers },
       )
-      .then(resp => {})
+      .then(resp => {
+        if(resp.message === 'successfull') {
+          notification.open({
+            message: 'Success'
+          });
+        }
+        setSelectedRowKeys([])
+      })
       .catch(err => {
         console.log(err);
       })
