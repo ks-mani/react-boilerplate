@@ -11,7 +11,7 @@ import { Divider } from 'antd';
 import axios from 'axios';
 
 import FilterSearchBarComponent from '../FilterSearchBarComponent/Loadable';
-import FilterTableContainer from '../FilterTableContainer/Loadable'
+import FilterTableContainer from '../FilterTableContainer/Loadable';
 
 export function FilterComponent() {
   const [tableData, setTableData] = useState([]);
@@ -36,12 +36,13 @@ export function FilterComponent() {
         { headers },
       )
       .then(resp => {
-        const data = resp.data.data;
-        setTableData(data.map(item=>({...item, key: item.call_id})));
-        setLoading(false);
+        const { data } = resp.data;
+        setTableData(data.map(item => ({ ...item, key: item.call_id })));
       })
       .catch(err => {
         console.log(err);
+      })
+      .finally(() => {
         setLoading(false);
       });
   }, []);
@@ -49,7 +50,7 @@ export function FilterComponent() {
     <>
       <FilterSearchBarComponent buttonHandler={searchTheRecords} />
       <Divider />
-      <FilterTableContainer data={tableData} load={loading}></FilterTableContainer>
+      <FilterTableContainer data={tableData} load={loading} />
     </>
   );
 }
