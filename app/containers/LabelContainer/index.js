@@ -99,7 +99,9 @@ export function LabelContainer() {
     const labelData = new Set();
     selectedRowKeys.forEach(item => {
       const obj = tableData.find(el => el.call_id === item);
-      labelData.add(...obj.label_id);
+      obj.label_id.forEach(item=>{
+        labelData.add(item)
+      })
     });
     setSelectedLabels([...labelData.values()]);
   }, [selectedRowKeys, tableData]);
@@ -113,7 +115,9 @@ export function LabelContainer() {
     const labelData = new Set();
     selectedRowKeys.forEach(item => {
       const obj = tableData.find(el => el.call_id === item);
-      labelData.add(...obj.label_id);
+      obj.label_id.forEach(item=>{
+        labelData.add(item)
+      })
     });
     const source = [...labelData.values()];
 
