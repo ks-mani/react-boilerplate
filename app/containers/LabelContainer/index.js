@@ -36,6 +36,7 @@ export function LabelContainer() {
   const [tableData, setTableData] = useState([]);
   const [loading, setLoading] = useState(false);
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
+  const [selectedLabels, setSelectedLabels] = useState([]);
   const [labelsList, setLabelsList] = useState([]);
   const [visible, setVisible] = useState(false);
   const [confirmLoading, setConfirmLoading] = useState(false);
@@ -89,9 +90,15 @@ export function LabelContainer() {
     return children;
   }, []);
 
-  const showModal = () => {
+  const showModal = useCallback(() => {
     setVisible(true);
-  };
+    let labelData= new Set();
+    selectedRowKeys.forEach((item)=>{
+      let obj = tableData.find(el=>el.call_id===item)
+      labelData.add(...obj.label_id)
+    })
+    setSelectedLabels([...labelData.values()])
+  }, [selectedRowKeys]);
 
   const handleCancel = () => {
     setVisible(false);
@@ -144,17 +151,17 @@ export function LabelContainer() {
         onCancel={handleCancel}
         onOk={handleOk}
       >
-        <Select
+        {visible ? (<Select
           mode="tags"
           allowClear
           style={{ width: '90%' }}
           placeholder="Select Labels"
-          defaultValue={[]}
+          defaultValue={selectedLabels}
         >
           {labelsList.length > 0
             ? getOptionsForMultipleSelect(labelsList)
             : labelsList}
-        </Select>
+        </Select>): null}
       </Modal>
     </>
   );
